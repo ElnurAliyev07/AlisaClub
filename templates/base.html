@@ -1,0 +1,517 @@
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="az">
+
+<head>
+{% block meta %}
+<title>{{ seo_data.seo_title|default:"Alisa Club" }}</title>
+
+{% if seo_data.logo %}
+    <link rel="icon" href="{{ seo_data.logo }}" type="image/png" />
+{% else %}
+    <link rel="icon" href="{% static 'images/default-logo.png' %}" type="image/png" />
+{% endif %}
+
+<meta name="description" content="{{ seo_data.seo_description|default:'Alisa Club, uşaqlar üçün sevinc, öyrənmə və əyləncəni bir araya gətirən məkandır.' }}" />
+<meta name="keywords" content="{{ seo_data.meta_keywords|default:'Alisa Club, uşaqlar, sevinc, öyrənmə, əyləncə, məkan' }}" />
+<link rel="canonical" href="{{ seo_data.canonical_url|default:request.build_absolute_uri }}" />
+<meta name="robots" content="{% if seo_data.no_index %}noindex{% else %}index{% endif %}, {% if seo_data.no_follow %}nofollow{% else %}follow{% endif %}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Alisa Club" />
+<meta property="og:title" content="{{ seo_data.og_title|default:seo_data.seo_title|default:'Alisa Club' }}" />
+<meta property="og:description" content="{{ seo_data.og_description|default:seo_data.seo_description|default:'Alisa Club, uşaqlar üçün sevinc, öyrənmə və əyləncəni bir araya gətirən məkandır.' }}" />
+<meta property="og:image" content="{{ seo_data.og_image }}" />
+<meta property="og:image:alt" content="{{ seo_data.og_title|default:seo_data.seo_title|default:'Alisa Club' }}" />
+<meta property="og:url" content="{{ seo_data.canonical_url|default:request.build_absolute_uri }}" />
+
+<!-- Twitter Meta -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ seo_data.og_title|default:seo_data.seo_title|default:'Alisa Club' }}" />
+<meta name="twitter:description" content="{{ seo_data.og_description|default:seo_data.seo_description|default:'Alisa Club, uşaqlar üçün sevinc, öyrənmə və əyləncəni bir araya gətirən məkandır.' }}" />
+<meta name="twitter:image" content="{{ seo_data.og_image }}" />
+
+<meta name="author" content="Alisa Club" />
+<meta name="theme-color" content="#2196f3" />
+{% endblock %}
+    
+    <!--==============================
+	  Google Fonts
+	============================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+    <!--==============================
+	    All CSS File
+	============================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="assets/css/app.min.css"> -->
+    <!-- Fontawesome Icon -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+    <!-- Layerslider -->
+    <link rel="stylesheet" href="{% static 'assets/css/layerslider.min.css' %}">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.min.css' %}">
+    <!-- Slick Slider -->
+    <link rel="stylesheet" href="{% static 'assets/css/slick.min.css' %}">
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+
+</head>
+
+<body>
+
+
+    <!--[if lte IE 9]>
+    	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+
+
+    <!--********************************
+   		Code Start From Here 
+	******************************** -->
+
+
+
+
+    <!--==============================
+     Preloader
+    ==============================-->
+    <div class="preloader">
+        <button class="vs-btn preloaderCls">Yükləməni Ləğv Et</button>
+        <div class="preloader-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <!--==============================
+    Mobile Menu
+    ============================== -->
+    <div class="vs-menu-wrapper">
+        <div class="vs-menu-area text-center">
+            <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
+            <div class="mobile-logo">
+                <a href="{% url 'home' %}">
+                    {% if logo %}
+                        <img src="{{ logo.image.url }}" alt="Alisa">
+                    {% else %}
+                        <img src="{% static 'assets/img/logo.svg' %}" alt="Alisa">
+                    {% endif %}
+                </a>
+            </div>
+            <div class="vs-mobile-menu">
+                <ul>
+                    <li class="menu-item-has-children">
+                        <a href="{% url 'home' %}">Ana Səhifə</a>
+                       
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}">Haqqında</a>
+                    </li>
+                    <li class="menu-item-has-children">
+                        <a href="{% url 'service' %}">Xidmətlər</a>
+                        
+                    </li>
+                    <li class="menu-item-has-children">
+                        <a href="{% url 'blog' %}">Bloq</a>
+                        
+                    </li>
+                    
+                    <li>
+                        <a href="{% url 'contact' %}">Əlaqə</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'profile' %}">👤 Profil</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}">🚪 Çıxış</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'registration' %}">Üzv Ol</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div><!--==============================
+    Sidemenu
+    ============================== -->
+<div class="sidemenu-wrapper d-none d-lg-block">
+    <div class="sidemenu-content">
+        <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+        <div class="widget">
+            <div class="widget-about">
+                <div class="footer-logo">
+                    {% if logo %}
+                        <img src="{{ logo.image.url }}" alt="Alisa">
+                    {% else %}
+                        <img src="{% static 'assets/img/logo.svg' %}" alt="Alisa">
+                    {% endif %}
+                </div>
+                <p class="mb-0">
+                    {% if footer %}
+                    {{ footer.description|safe }}
+                    {% else %}
+                    “Alisa Club” – uşaqlar üçün sevinc, öyrənmə və əyləncəni bir araya gətirən məkandır.
+                    Biz hər yaşda uşağın inkişafı üçün faydalı və maraqlı fəaliyyətlər təqdim edirik.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="widget">
+            <h3 class="widget_title">Əlaqə</h3>
+            <div>
+                {% if contact %}
+                <p class="footer-text">{{ contact.work_days|safe }}</p>
+                {% else %}
+                <p class="footer-text">Bazar ertəsi – Cümə: <span class="time">08:30 – 20:00</span></p>
+                <p class="footer-text">Şənbə, Bazar: <span class="time">Qapalı</span></p>
+                {% endif %}
+                <p class="footer-info">
+                    <i class="fal fa-envelope"></i>E-mail:
+                    <a href="mailto:info@alisaclub.az">
+                        {% if contact %}
+                            {{ contact.email }}
+                        {% else %}
+                            info@alisaclub.az
+                        {% endif %}
+                    </a>
+                </p>
+                <p class="footer-info">
+                    <i class="fas fa-mobile-alt"></i>Telefon:
+                    <a href="tel:+994501234567">
+                        {% if contact %}
+                            {{ contact.phone }}
+                        {% else %}
+                            +994 50 123 45 67
+                        {% endif %}
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        {% include "includes/_sidebar_recent_blogs.html" %}
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+
+    <!--==============================
+        Header Area
+    ==============================-->
+    <header class="vs-header header-layout2">
+        <div class="header-top">
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col col-sm-auto">
+                        <div class="header-logo">
+                            <a href="{% url 'home' %}">
+                                {% if logo %}
+                                <img src="{{ logo.image.url }}" alt="{{ logo.alt_text }}">
+                                {% else %}
+                                <img src="{% static 'assets/img/logo-2.svg' %}" alt="logo">
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-auto d-none d-lg-block">
+                        <div class="header-links style3 style-white">
+                            <ul>
+    <li class="d-none d-xl-inline-block">
+        <i class="fas fa-envelope"></i>E-mail: 
+        <a href="mailto:info@alisaclub.az">
+            {% if contact %}
+                {{ contact.email }}
+            {% else %}
+                info@alisaclub.az
+            {% endif %}
+        </a>
+    </li>
+    <li>
+        <i class="fas fa-mobile-alt"></i>Telefon: 
+        <a href="tel:+994501234567">
+            {% if contact %}
+                {{ contact.phone }}
+            {% else %}
+                +994 50 123 45 67
+            {% endif %}
+        </a>
+    </li>
+</ul>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row align-items-center justify-content-end gx-3">
+                            <div class="col-auto d-none d-lg-block">
+                                <div class="header-icons">
+                                    <button class="simple-icon style2 sideMenuToggler"><i
+                                            class="far fa-bars"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-auto ">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'profile' %}" class="vs-btn">👤 Profil</a>
+                                {% else %}
+                                    <a href="{% url 'registration' %}" class="vs-btn">Üzv Ol</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="menu-area">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col">
+                        <nav class="main-menu menu-style2 d-none d-lg-block">
+                            <ul>
+                                <li >
+                                    <a href="{% url 'home' %}">Ana Səhifə</a>
+                                    
+                                </li>
+                                <li>
+                                    <a href="{% url 'about' %}">Haqqında</a>
+                                </li>
+                                <li >
+                                    <a href="{% url 'service' %}">Xidmətlər</a>
+                                   
+                                </li>
+                                <li >
+                                    <a href="{% url 'blog' %}">Bloq</a>
+                                   
+                                </li>
+                                <li>
+                                    <a href="{% url 'contact' %}">Əlaqə</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <button class="vs-menu-toggle d-inline-block d-lg-none"><i class="fal fa-bars"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    
+    <!--==============================
+			Footer Area
+	==============================-->
+<footer class="footer-wrapper footer-layout3">
+    <div class="shape-mockup jump-reverse d-none d-xxxl-block" data-right="0" data-top="0">
+        <img src="{% static 'assets/img/shape/f-s-3-1.png' %}" alt="">
+    </div>
+    <div class="shape-mockup jump d-none d-xxxl-block" data-left="0" data-top="-2%">
+        <img src="{% static 'assets/img/shape/f-s-3-2.png' %}" alt="">
+    </div>
+
+    <div class="container">
+        <div class="footer-top">
+            <div class="row justify-content-center justify-content-lg-between align-items-center gy-4">
+                <div class="col-auto">
+                    <div class="media-style2">
+                        <div class="media-icon">
+                            <img src="{% static 'assets/img/icon/cal-1-1.svg' %}" alt="icon">
+                        </div>
+                        <div class="media-body">
+                            <span class="media-label">Yaxın Tədbirlər</span>
+                            <p class="media-title">
+                                {% if footer_event %}<a href="{% url 'event_detail' footer_event.slug %}" class="text-inherit">{{ footer_event.title }}</a>{% else %}<a href="#" class="text-inherit">Tədbir yoxdur</a>{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    {% if footer_event %}
+                    <div class="countdown-style1" id="clockdiv" data-countdown="{{ footer_event.event_date|date:'Y-m-d H:i:s' }}">
+                        <ul class="countdown-list">
+                            <li><span class="days">0</span>Gün</li>
+                            <li><span class="hours">00</span>Saat</li>
+                            <li><span class="minutes">00</span>Dəqiqə</li>
+                            <li><span class="seconds">00</span>Saniyə</li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="countdown-style1">
+                        <ul class="countdown-list">
+                            <li><span>0</span>Gün</li>
+                            <li><span>00</span>Saat</li>
+                            <li><span>00</span>Dəqiqə</li>
+                            <li><span>00</span>Saniyə</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-area">
+        <div class="container">
+            <div class="row justify-content-between gx-60">
+                <div class="col-lg-5">
+                    <div class="widget footer-widget">
+                        <div class="widget-about">
+                            <div class="footer-logo">
+                                {% if logo %}
+                                <img src="{{ logo.image.url }}" alt="{{ logo.alt_text }}">
+                                {% else %}
+                                <img src="{% static 'assets/img/logo-2.svg' %}" alt="Alisa Club">
+                                {% endif %}
+                            </div>
+                            <p class="mb-0">
+                                {% if footer %}
+                                {{ footer.description|safe }}
+                                {% else %}
+                                “Alisa Club” – uşaqların inkişafı, əyləncəsi və yaradıcılığı üçün nəzərdə tutulmuş
+                                sevimli məkandır. Biz hər uşağın maraqlarına uyğun tədris və oyun proqramları təqdim edirik.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="widget footer-widget">
+                        <h3 class="widget_title">Əlaqə</h3>
+                        <div class="vs-widget-about">
+                            <p class="map-link mb-2 pb-1">
+                                {% if contact %}
+                                {{ contact.address }}
+                                {% else %}
+                                Bakı şəhəri, Nərimanov rayonu, Təhsil küçəsi 10A
+                                {% endif %}
+                            </p>
+                            <p class="footer-call">
+                                {% if contact %}
+                                <a class="text-inherit" href="tel:{{ contact.phone }}">{{ contact.phone }}</a>
+                                {% else %}
+                                <a class="text-inherit" href="tel:+994501234567">+994 50 123 45 67</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="copyright-wrap">
+            <div class="row flex-row-reverse gy-3 justify-content-between align-items-center">
+                <div class="col-lg-auto">
+                    <div class="vs-social">
+                        {% if social_links %}
+                            <a href="{{ social_links.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                            <a href="{{ social_links.instagram }}"><i class="fab fa-instagram"></i></a>
+                            <a href="{{ social_links.telegram }}"><i class="fab fa-telegram-plane"></i></a>
+                            <a href="{{ social_links.youtube }}"><i class="fab fa-youtube"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-auto">
+                    <p class="copyright-text text-white">
+                        {% if footer %}
+                        {{ footer.copyright_text }}<a href="{{ footer.creation_url }}" target="_blank"> {{ footer.creation_text }}</a> {{ footer.rights_reserved|default:"Bütün Hüquqlar Qorunur" }}.
+                        {% else %}
+                        © 2025 <a href="{% url 'home' %}">Alisa Club</a>. Bütün hüquqlar qorunur.
+                        Hazırladı: <a href="#">Alisa Digital Team</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+ <!-- Scroll To Top -->
+    <a href="#" class="scrollToTop scroll-btn"><i class="far fa-arrow-up"></i></a>
+
+    <!--********************************
+			Code End  Here 
+	******************************** -->
+
+    <!--==============================
+        All Js File
+    ============================== -->
+    <!-- Jquery -->
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <!-- Slick Slider -->
+    <script src="{% static 'assets/js/slick.min.js' %}"></script>
+    <!-- <script src="assets/js/app.min.js"></script> -->
+    <!-- Layerslider -->
+    <script src="{% static 'assets/js/layerslider.utils.js' %}"></script>
+    <script src="{% static 'assets/js/layerslider.transitions.js' %}"></script>
+    <script src="{% static 'assets/js/layerslider.kreaturamedia.jquery.js' %}"></script>
+    <!-- jquery ui -->
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Magnific Popup -->
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Isotope Filter -->
+    <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+    <!-- Main Js File -->
+    <script src="{% static 'assets/js/datecounter.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+    // Footer Event Countdown
+    document.addEventListener('DOMContentLoaded', function() {
+        const clockDiv = document.getElementById('clockdiv');
+        if (clockDiv && clockDiv.dataset.countdown) {
+            const eventDate = new Date(clockDiv.dataset.countdown).getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = eventDate - now;
+                
+                if (distance < 0) {
+                    clockDiv.querySelector('.days').textContent = '0';
+                    clockDiv.querySelector('.hours').textContent = '00';
+                    clockDiv.querySelector('.minutes').textContent = '00';
+                    clockDiv.querySelector('.seconds').textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                clockDiv.querySelector('.days').textContent = days;
+                clockDiv.querySelector('.hours').textContent = hours.toString().padStart(2, '0');
+                clockDiv.querySelector('.minutes').textContent = minutes.toString().padStart(2, '0');
+                clockDiv.querySelector('.seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+    });
+    </script>
+
+</body>
+
+</html>

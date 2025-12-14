@@ -1,0 +1,293 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% if page_settings and page_settings.breadcrumb_image %}{{ page_settings.breadcrumb_image.url }}{% else %}{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}{% endif %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">
+                {% if page_settings %}{{ page_settings.breadcrumb_title }}{% else %}Doğum Günü Şənlikləri{% endif %}
+            </h1>
+            <p class="breadcumb-text">
+                {% if page_settings %}{{ page_settings.breadcrumb_description }}{% else %}Uşaqlarınızın Doğum Gününü Alisa Club-da Unudulmaz Edin!{% endif %}
+            </p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana səhifə</a></li>
+                    <li>{% if page_settings %}{{ page_settings.breadcrumb_title }}{% else %}Doğum Günü Şənlikləri{% endif %}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="space-top space-extra-bottom">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 wow animate__fadeInLeft">
+                <div class="birthday-hero-content">
+                    <span class="vs-title__sub mb-3 d-inline-block">
+                        {% if page_settings %}{{ page_settings.hero_subtitle }}{% else %}🎉 Uşaqlarınız üçün ən xoş günlər{% endif %}
+                    </span>
+                    <h2 class="vs-title__main mb-4">
+                        {% if page_settings %}{{ page_settings.hero_title }}{% else %}Doğum Gününü Alisa Club-da Unudulmaz Edin!{% endif %}
+                    </h2>
+                    <p class="mb-4">
+                        {% if page_settings %}
+                        {{ page_settings.hero_description|linebreaks }}
+                        {% else %}
+                        Alisa Club-da hər bir doğum günü xüsusi bir tədbir kimi qeyd olunur. 
+                        Peşəkar komandamız, kreativ dizaynımız və interaktiv əyləncələrimizlə 
+                        uşağınızın ən xoşbəxt günlərindən birini yaradırıq.
+                        {% endif %}
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{% if page_settings %}{{ page_settings.hero_button_url }}{% else %}#contact-section{% endif %}" class="vs-btn">
+                            <span class="vs-btn__border"></span>
+                            {% if page_settings %}{{ page_settings.hero_button_text }}{% else %}Rezervasiya Et{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow animate__fadeInRight">
+                <div class="birthday-hero-image position-relative">
+                    {% if page_settings and page_settings.hero_image %}
+                    <img src="{{ page_settings.hero_image.url }}" alt="{{ page_settings.hero_title }}" class="w-100 rounded-4 shadow-lg">
+                    {% else %}
+                    <img src="https://static.vecteezy.com/system/resources/previews/033/756/040/large_2x/happy-birthday-cake-hd-wallpaper-ai-generated-photo.jpg" alt="Birthday Party" class="w-100 rounded-4 shadow-lg">
+                    {% endif %}
+                    <div class="birthday-badge position-absolute top-0 end-0 m-4 bg-white rounded-circle p-4 shadow">
+                        <h3 class="mb-0 text-primary">🎂</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'includes/home/_contact.html' %}
+
+{% if galleries %}
+<!-- Add these to the <head> of your page -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Gallery Section -->
+<section class="space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="vs-title text-center mb-5 wow animate__fadeInUp">
+                    <span class="vs-title__sub">
+                        {% if page_settings %}{{ page_settings.gallery_subtitle }}{% else %}📷 Qalereya{% endif %}
+                    </span>
+                    <h2 class="vs-title__main">
+                        {% if page_settings %}{{ page_settings.gallery_title }}{% else %}Keçmiş Şənliklərdən Görüntülər{% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-wrapper position-relative">
+            <div class="swiper gallery-swiper">
+                <div class="swiper-wrapper">
+                    {% for gallery in galleries %}
+                    <div class="swiper-slide">
+                        <div class="gallery-item rounded-3 overflow-hidden shadow position-relative" data-image="{{ gallery.image.url }}">
+                            <img src="{{ gallery.image.url }}" alt="{{ gallery.title }}" class="w-100">
+                            <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-search-plus text-white" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Navigation buttons centered below -->
+            <div class="swiper-nav d-flex justify-content-center mt-3">
+                <button class="swiper-button-prev-custom btn rounded-circle mx-2" style="width: 45px; height: 45px; border: 2px solid #8B4513; background: #8B4513; color: white;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="swiper-button-next-custom btn rounded-circle mx-2" style="width: 45px; height: 45px; border: 2px solid #8B4513; background: #8B4513; color: white;">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body p-0 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3 bg-white rounded-circle" data-bs-dismiss="modal" aria-label="Close" style="width: 40px; height: 40px; opacity: 1;"></button>
+                <button class="prev-btn position-absolute top-50 start-0 translate-middle-y ms-3 text-white fs-1" style="background: rgba(139,69,19,0.8); border: none; border-radius: 50%; width: 50px; height: 50px; z-index: 10;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <img src="" alt="Full Image" class="img-fluid w-100 rounded-3" id="modalImage" style="max-height: 80vh; object-fit: contain;">
+                <button class="next-btn position-absolute top-50 end-0 translate-middle-y me-3 text-white fs-1" style="background: rgba(139,69,19,0.8); border: none; border-radius: 50%; width: 50px; height: 50px; z-index: 10;">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.gallery-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.gallery-swiper {
+    padding: 0 15px;
+}
+
+.gallery-item {
+    cursor: pointer;
+    height: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.swiper-nav {
+    margin-top: 20px;
+}
+
+.swiper-button-prev-custom:hover,
+.swiper-button-next-custom:hover {
+    background: #A0522D !important;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+    background: rgba(139,69,19,1) !important;
+}
+
+/* Responsive */
+@media (max-width: 575.98px) {
+    .gallery-item {
+        height: 200px;
+    }
+    .swiper-button-prev-custom,
+    .swiper-button-next-custom {
+        width: 40px;
+        height: 40px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Swiper
+    const swiper = new Swiper('.gallery-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 15,
+        loop: true,
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+        },
+        grabCursor: true,
+    });
+
+    // Custom navigation
+    const prevCustom = document.querySelector('.swiper-button-prev-custom');
+    const nextCustom = document.querySelector('.swiper-button-next-custom');
+    if (prevCustom) prevCustom.addEventListener('click', () => swiper.slidePrev());
+    if (nextCustom) nextCustom.addEventListener('click', () => swiper.slideNext());
+
+    // Lightbox functionality
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    const modalImage = document.getElementById('modalImage');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const images = Array.from(galleryItems).map(item => item.dataset.image);
+    let currentIndex = 0;
+
+    galleryItems.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            currentIndex = index;
+            modalImage.src = this.dataset.image;
+            modal.show();
+        });
+    });
+
+    // Prev/Next in modal
+    document.querySelector('.prev-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        modalImage.src = images[currentIndex];
+    });
+
+    document.querySelector('.next-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        modalImage.src = images[currentIndex];
+    });
+
+    // Keyboard navigation
+    document.getElementById('imageModal').addEventListener('shown.bs.modal', function() {
+        document.addEventListener('keydown', handleKeydown);
+    });
+    document.getElementById('imageModal').addEventListener('hidden.bs.modal', function() {
+        document.removeEventListener('keydown', handleKeydown);
+    });
+    function handleKeydown(e) {
+        if (e.key === 'ArrowLeft') document.querySelector('.prev-btn').click();
+        if (e.key === 'ArrowRight') document.querySelector('.next-btn').click();
+        if (e.key === 'Escape') modal.hide();
+    }
+});
+</script>
+{% endif %}
+
+<style>
+    /* Birthday Badge Animation */
+    .birthday-badge {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    /* Smooth Scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcumb-wrapper " data-bg-src="{% if page_settings and page_settings.breadcrumb_image %}{{ page_settings.breadcrumb_image.url }}{% else %}{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}{% endif %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">{% if page_settings %}{{ page_settings.breadcrumb_title }}{% else %}Xidmətlər{% endif %}</h1>
+            <p class="breadcumb-text">{% if page_settings %}{{ page_settings.breadcrumb_description }}{% else %}Alisa Club uşaqlar üçün əyləncəli və öyrədici fəaliyyətlər təqdim edir{% endif %}</p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                    <li>Xidmətlər</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if featured_services %}
+<section class=" space-top space-extra-bottom">
+    <div class="container">
+        <div class="title-area text-center">
+            <div class="sec-bubble">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+            </div>
+            <h2 class="sec-title">{% if page_settings %}{{ page_settings.top_section_title }}{% else %}Uşağınızı İndi Proqrama Qeydiyyatdan Keçirin!{% endif %}</h2>
+            <p class="sec-text">{% if page_settings %}{{ page_settings.top_section_description }}{% else %}Alisa Club-da hər uşaq üçün açıq qapı siyasəti mövcuddur və bütün uşaqlar üçün pulsuz sınaq dərsi təklif olunur.{% endif %}</p>
+        </div>
+        
+        <div class="row vs-carousel" data-slide-show="4" data-ml-slide-show="3" data-lg-slide-show="3" data-md-slide-show="2">
+            {% for service in featured_services %}
+            <div class="service-style1 col-xl-3">
+                <div class="service-body">
+                    <div class="service-img">
+                            <img src="{{ service.image.url }}" alt="{{ service.title }}">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <img src="{% static service.icon_path %}" alt="{{ service.title }}">
+                        </div>
+                        <h3 class="service-title">
+                            <a >{{ service.title }}</a>
+                        </h3>
+                        <p class="service-text">{{ service.short_description }}</p>
+                        <div class="service-bottom">
+                            <a  class="service-btn">Ətraflı Öyrən</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if standard_services %}
+<section class=" space-extra-bottom">
+    <svg class="svg-hidden">
+        <clipPath id="service-clip1" clipPathUnits="objectBoundingBox">
+            <path d="M0.379,0.037 C0.459,-0.006,0.558,-0.006,0.638,0.037 L0.879,0.167 C0.959,0.21,1,0.289,1,0.375 V0.635 C1,0.721,0.959,0.8,0.879,0.843 L0.638,0.973 C0.558,1,0.459,1,0.379,0.973 L0.138,0.843 C0.058,0.8,0.008,0.721,0.008,0.635 V0.375 C0.008,0.289,0.058,0.21,0.138,0.167 L0.379,0.037"></path>
+        </clipPath>
+    </svg>
+    <div class="container">
+        <div class="row justify-content-center justify-content-xl-start">
+            <div class="col-lg-10 col-xl-10 text-center text-xl-start">
+                <div class="title-area">
+                    <span class="sec-subtitle">{% if page_settings %}{{ page_settings.middle_section_subtitle }}{% else %}Bizim Təklif Etdiyimiz Xidmətlər{% endif %}</span>
+                    <h2 class="sec-title">{% if page_settings %}{{ page_settings.middle_section_title }}{% else %}Uşağınızı fəaliyyətlərdə düzgün istiqamətləndirmək və dəstək olmaq üçün buradayıq{% endif %}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row gx-80 gy-30 pt-lg-2">
+            {% for service in standard_services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="service-style2">
+                    <div class="service-icon">
+                        <div class="service-shape1"></div>
+                        <div class="service-shape2"></div>
+                        <div class="service-shape3"></div>
+                        <img src="{% static service.icon_path %}" alt="{{ service.title }}">
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">
+                            <a class="text-inherit" >{{ service.title }}</a>
+                        </h3>
+                        <p class="service-text">{{ service.short_description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class=" space-extra" data-bg-src="{% static 'assets/img/bg/cta-bg-1-1.jpg' %}">
+    <div class="container">
+        <div class="cta-box1">
+            <h2 class="cta-title">{% if page_settings %}{{ page_settings.cta_title }}{% else %}Gəlin birlikdə möhtəşəm anlar yaradaq{% endif %}</h2>
+            <p class="cta-text">{% if page_settings %}{{ page_settings.cta_description }}{% else %}Uşağınızın inkişafı, təlimi və klubdakı fəaliyyətləri barədə ən son məlumatları, dəstək və tövsiyələri əldə edin.{% endif %}</p>
+            <a href="{% url 'registration' %}" class="vs-btn">{% if page_settings %}{{ page_settings.cta_button_text }}{% else %}Üzv Ol{% endif %}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,259 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block title %}Profil - {{ profile.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">👤 Mənim Profilim</h1>
+            <p class="breadcumb-text">{{ profile.user.get_full_name }} - {{ status }}</p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                    <li>Profil</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="bg-color6 space">
+<div class="container">
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" style="border-radius: 12px; border-left: 5px solid {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' %}#dc3545{% elif message.tags == 'warning' %}#ffc107{% else %}#17a2b8{% endif %};" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-3" style="font-size: 24px;"></i>
+                <div class="flex-grow-1">{{ message }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Şəxsi məlumat bölməsi -->
+    <div class="card shadow-sm mb-4" style="border-radius: 15px; overflow: hidden;">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
+            <h4 class="mb-0 text-white">👤 Şəxsi Məlumat</h4>
+            <div>
+                <a href="{% url 'edit_profile' %}" class="vs-btn style2 me-2">✏️ Məlumatı Dəyiş</a>
+                <a href="{% url 'logout' %}" class="vs-btn style3">🚪 Çıxış</a>
+            </div>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-user text-primary me-2"></i>
+                        <strong>Ad Soyad:</strong>
+                    </div>
+                    <p class="ms-4">{{ profile.user.get_full_name }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-envelope text-primary me-2"></i>
+                        <strong>E-poçt:</strong>
+                    </div>
+                    <p class="ms-4">{{ profile.user.email }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-phone text-primary me-2"></i>
+                        <strong>Telefon:</strong>
+                    </div>
+                    <p class="ms-4">{{ profile.phone|default:"Əlavə edilməyib" }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-calendar text-primary me-2"></i>
+                        <strong>Qeydiyyat tarixi:</strong>
+                    </div>
+                    <p class="ms-4">{{ profile.created_at|date:"d.m.Y" }}</p>
+                </div>
+            </div>
+            <div class="alert" style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea; border-radius: 10px; padding: 20px;">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <strong style="font-size: 18px;">Status:</strong> 
+                        <span style="font-size: 20px; font-weight: bold; color: #667eea;">{{ status }}</span>
+                        {% if total_medals >= 10 %}🏆
+                        {% elif total_medals >= 6 %}🥈
+                        {% elif total_medals >= 3 %}🥉
+                        {% endif %}
+                    </div>
+                    <div>
+                        <strong style="font-size: 18px;">Cəmi Medallar:</strong> 
+                        <span style="font-size: 24px; font-weight: bold; color: #764ba2;">{{ total_medals }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Uşaq məlumatı -->
+    <div class="card shadow-sm mb-4" style="border-radius: 15px; overflow: hidden;">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px;">
+            <h4 class="mb-0 text-white">👶 Uşaqlarım</h4>
+            <a href="{% url 'add_child' %}" class="vs-btn style2">➕ Uşaq Əlavə Et</a>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            {% if children_with_medals %}
+                {% for item in children_with_medals %}
+                <div class="border rounded p-4 mb-4 shadow-sm" style="background: #fff; border-radius: 12px !important; border: 2px solid #f5f5f5 !important;">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 style="color: #f5576c; font-weight: bold; font-size: 22px;">{{ item.child.name }}, {{ item.child.get_age }} yaş</h5>
+                            <p class="text-muted mb-2"><i class="fas fa-birthday-cake me-2"></i>Doğum: {{ item.child.birth_date|date:"d.m.Y" }}</p>
+                            
+                            {% if item.child.is_birthday_soon %}
+                            <div class="alert alert-warning py-2 px-3" style="border-radius: 8px; border-left: 4px solid #ffc107;">
+                                <i class="fas fa-gift me-2"></i>🎉 Doğum günü yaxınlaşır! Xüsusi təkliflərdən yararlanın.
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'edit_child' item.child.id %}" class="vs-btn style4" style="padding: 8px 15px;">✏️</a>
+                            <a href="{% url 'delete_child' item.child.id %}" class="vs-btn style3" style="padding: 8px 15px;">🗑️</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Medallar -->
+                    {% if item.medals %}
+                    <div class="mt-4 p-3" style="background: linear-gradient(135deg, #ffecd215 0%, #fcb69f15 100%); border-radius: 10px;">
+                        <h6 style="color: #f5576c; font-weight: bold; margin-bottom: 15px;">
+                            <i class="fas fa-medal me-2"></i>Medallar ({{ item.medal_count }})
+                        </h6>
+                        <div class="row g-3">
+                            {% for medal in item.medals %}
+                            <div class="col-6 col-md-4 col-lg-2">
+                                <div class="text-center p-3 border rounded shadow-sm" 
+                                     style="background: white; border-radius: 12px !important; cursor: pointer; transition: transform 0.3s;"
+                                     onmouseover="this.style.transform='scale(1.05)'"
+                                     onmouseout="this.style.transform='scale(1)'"
+                                     data-bs-toggle="tooltip" 
+                                     title="{{ medal.medal_type.name }} - {{ medal.event_name }} ({{ medal.event_date|date:'d.m.Y' }})">
+                                    <div style="font-size: 3rem;">{{ medal.medal_type.icon }}</div>
+                                    <small class="d-block fw-bold" style="color: #666;">{{ medal.medal_type.name }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-light text-center mt-3" style="border-radius: 10px;">
+                        <i class="fas fa-info-circle me-2"></i>Hələ medal qazanılmayıb. Tədbirlərə qatılın!
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">Hələ uşaq məlumatı əlavə edilməyib.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Tədbirlərim -->
+    <div class="card shadow-sm mb-4" style="border-radius: 15px; overflow: hidden;">
+        <div class="card-header text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px;">
+            <h4 class="mb-0 text-white"><i class="fas fa-calendar-alt me-2"></i>Tədbirlərim</h4>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            {% if bookings %}
+                <div class="table-responsive">
+                    <table class="table table-hover" style="border-radius: 10px; overflow: hidden;">
+                        <thead style="background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%);">
+                            <tr>
+                                <th style="padding: 15px; font-weight: bold; color: #4facfe;">Tədbir</th>
+                                <th style="padding: 15px; font-weight: bold; color: #4facfe;">Tarix</th>
+                                <th style="padding: 15px; font-weight: bold; color: #4facfe;">Status</th>
+                                <th style="padding: 15px; font-weight: bold; color: #4facfe;">İştirakçılar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <td style="padding: 15px; font-weight: 500;">{{ booking.event_name }}</td>
+                                <td style="padding: 15px;"><i class="far fa-calendar me-2"></i>{{ booking.event_date|date:"d.m.Y" }}</td>
+                                <td style="padding: 15px;">
+                                    {% if booking.status == 'attended' %}
+                                        <span class="badge" style="background: #28a745; padding: 8px 12px; border-radius: 20px;">✅ İştirak etdi</span>
+                                    {% elif booking.status == 'reserved' %}
+                                        <span class="badge" style="background: #4facfe; padding: 8px 12px; border-radius: 20px;">📌 Rezerv edildi</span>
+                                    {% else %}
+                                        <span class="badge" style="background: #6c757d; padding: 8px 12px; border-radius: 20px;">❌ Ləğv edildi</span>
+                                    {% endif %}
+                                </td>
+                                <td style="padding: 15px;">
+                                    {% for child in booking.children.all %}
+                                        <span class="badge" style="background: #f5f5f5; color: #333; padding: 6px 12px; border-radius: 15px; margin-right: 5px;">
+                                            <i class="fas fa-child me-1"></i>{{ child.name }}
+                                        </span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-light text-center" style="border-radius: 10px; padding: 30px;">
+                    <i class="fas fa-calendar-times" style="font-size: 48px; color: #ddd; margin-bottom: 15px;"></i>
+                    <p class="text-muted mb-0">Hələ tədbir rezervasiyası yoxdur.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Kampaniyalar və təkliflər -->
+    {% if campaigns %}
+    <div class="card shadow-sm mb-4" style="border-radius: 15px; overflow: hidden;">
+        <div class="card-header text-white" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 20px;">
+            <h4 class="mb-0 text-white"><i class="fas fa-gift me-2"></i>Aktiv Kampaniyalar</h4>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            {% for campaign in campaigns %}
+                {% if campaign.is_valid %}
+                <div class="alert shadow-sm mb-3" style="background: linear-gradient(135deg, #fff5f5 0%, #fffbea 100%); border: 2px solid #fa709a; border-radius: 12px; padding: 20px;">
+                    <div class="d-flex align-items-start">
+                        <div style="font-size: 48px; margin-right: 20px;">🎁</div>
+                        <div class="flex-grow-1">
+                            <h5 style="color: #fa709a; font-weight: bold; margin-bottom: 10px;">{{ campaign.title }}</h5>
+                            <p style="color: #666; margin-bottom: 15px;">{{ campaign.description }}</p>
+                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                                <div class="badge" style="background: #fa709a; padding: 10px 20px; font-size: 18px; border-radius: 25px;">
+                                    <i class="fas fa-percentage me-2"></i>{{ campaign.discount_percent }}% Endirim
+                                </div>
+                                {% if discount.code %}
+                                <div>
+                                    <strong style="color: #666;">Kod:</strong> 
+                                    <code style="background: #fff; padding: 8px 15px; border-radius: 8px; font-size: 16px; border: 2px dashed #fa709a;">{{ campaign.code }}</code>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="mt-3">
+                                <small style="color: #999;">
+                                    <i class="far fa-clock me-1"></i>Etibarlıdır: {{ campaign.valid_from|date:"d.m.Y" }} - {{ campaign.valid_until|date:"d.m.Y" }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+</section>
+
+<script>
+// Bootstrap tooltip aktivləşdirmə
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% load static %}
+<section class="space-top space-extra-bottom">
+    <div class="container">
+        {% if faq and faq.is_active %}
+        <div class="title-area text-center">
+            <div class="sec-bubble">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+            </div>
+            <h2 class="sec-title">{{ faq.title|default:'Valideyn Rəyləri' }}</h2>
+            <p class="sec-text">{{ faq.subtitle|default:'Nə deyirlər' }}</p>
+        </div>
+
+        <div class="row vs-carousel testislide3" data-slide-show="3" data-lg-slide-show="3" data-md-slide-show="2" data-sm-slide-show="1">
+            {% for item in faq_items %}
+            <div class="col-lg-4 col-md-6 d-flex mb-4">
+                <div class="testi-style2 d-flex flex-column h-100 w-100">
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <p class="testi-text mb-3">{{ item.comment }}</p>
+                    </div>
+                    <div class="testi-body mt-auto">
+                        <div class="testi-icon"><i class="fas fa-quote-left"></i></div>
+                        <div class="media-body">
+                            <h3 class="testi-name h5 mb-1">{{ item.name }}</h3>
+                            <div class="testi-rating">
+                                {% for _ in item.get_stars.filled %}
+                                <i class="fas fa-star text-warning"></i>
+                                {% endfor %}
+                                {% for _ in item.get_stars.empty %}
+                                <i class="far fa-star text-warning"></i>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback content if no FAQ items -->
+            <div class="col-lg-4 col-md-6 d-flex mb-4">
+                <div class="testi-style2 d-flex flex-column h-100 w-100">
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <p class="testi-text mb-3">Alisa Club uşaq üçün çox maraqlıdır! Mənim oğlum burada yeni dostlar tapdı və ev tapşırıqlarını sevərək edir.</p>
+                    </div>
+                    <div class="testi-body mt-auto">
+                        <div class="testi-icon"><i class="fas fa-quote-left"></i></div>
+                        <div class="media-body">
+                            <h3 class="testi-name h5 mb-1">Aytac Məmmədova</h3>
+                            <div class="testi-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Fallback static content when no active FAQ is found -->
+        <div class="title-area text-center">
+            <div class="sec-bubble">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+            </div>
+            <h2 class="sec-title">Valideyn Rəyləri</h2>
+            <p class="sec-text">Nə deyirlər</p>
+        </div>
+
+        <div class="row vs-carousel testislide3" data-slide-show="3" data-lg-slide-show="3" data-md-slide-show="2" data-sm-slide-show="1">
+            <div class="col-lg-4 col-md-6 d-flex mb-4">
+                <div class="testi-style2 d-flex flex-column h-100 w-100">
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <p class="testi-text mb-3">Alisa Club uşaq üçün çox maraqlıdır! Mənim oğlum burada yeni dostlar tapdı və ev tapşırıqlarını sevərək edir.</p>
+                    </div>
+                    <div class="testi-body mt-auto">
+                        <div class="testi-icon"><i class="fas fa-quote-left"></i></div>
+                        <div class="media-body">
+                            <h3 class="testi-name h5 mb-1">Aytac Məmmədova</h3>
+                            <div class="testi-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>

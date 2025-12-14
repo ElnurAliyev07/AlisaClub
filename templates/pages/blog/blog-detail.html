@@ -1,0 +1,262 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+{% load blog_filters %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">{{ blog.title }}</h1>
+            {% if blog.subtitle %}
+            <p class="breadcumb-text">{{ blog.subtitle }}</p>
+            {% endif %}
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana səhifə</a></li>
+                    <li><a href="{% url 'blog' %}">Bloqlarımız</a></li>
+                    <li>{{ blog.title }}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="vs-blog-wrapper blog-details space-top space-extra-bottom">
+    <div class="container">
+        <div class="row gx-40">
+            <div class="col-lg-8">
+                <div class="vs-blog blog-single">
+                    {% if blog.media_type == 'image' and blog.image %}
+                    <div class="blog-img">
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                    </div>
+                    {% elif blog.media_type == 'gallery' and blog.gallery.exists %}
+                    <div class="row">
+                        {% for gallery_image in blog.gallery.all %}
+                        <div class="col-md-6">
+                            <div class="mega-hover mb-30">
+                                <img src="{{ gallery_image.image.url }}" alt="{{ gallery_image.title|default:blog.title }}">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% elif blog.media_type == 'video' and blog.video_url %}
+                    <div class="mega-hover mb-30">
+                        {% if blog.image %}
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                        {% else %}
+                        <img src="{% static 'assets/img/blog/blog-s-d-2.jpg' %}" alt="{{ blog.title }}">
+                        {% endif %}
+                        <a href="{{ blog.video_url }}" class="play-btn popup-video position-center"><i class="fas fa-play"></i></a>
+                    </div>
+                    {% elif blog.media_type == 'audio' and blog.audio_url %}
+                    <div class="blog-audio mb-30">
+                        <iframe title="{{ blog.title }}" width="751" height="200" src="{{ blog.audio_url }}"></iframe>
+                    </div>
+                    {% endif %}
+
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <a href="{% url 'blog' %}"><i class="far fa-calendar-alt"></i>{{ blog.date|az_tarix }}</a>
+                            {% if blog.category %}
+                            <a href="{% url 'blog' %}?category={{ blog.category.slug }}"><i class="far fa-folder"></i>{{ blog.category.name }}</a>
+                            {% endif %}
+                        </div>
+                        <h2 class="blog-title">{{ blog.title }}</h2>
+                        {% if blog.subtitle %}
+                        <h4 class="mb-3">{{ blog.subtitle }}</h4>
+                        {% endif %}
+                        <div class="blog-text">
+                            {{ blog.full_content|linebreaks }}
+                        </div>
+                    </div>
+
+                    {% if blog.category or previous_blog or next_blog %}
+                    <div class="share-links clearfix">
+                        <div class="row justify-content-between">
+                            {% if blog.category %}
+                            <div class="col-xl-auto">
+                                <span class="share-links-title">Kateqoriya:</span>
+                                <div class="tagcloud">
+                                    <a href="{% url 'blog' %}?category={{ blog.category.slug }}">{{ blog.category.name }}</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-xl-auto text-xl-end">
+                                <span class="share-links-title">Paylaş:</span>
+                                <ul class="social-links">
+                                    <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if blog.author %}
+                    <div class="blog-author">
+                        {% if blog.author_image %}
+                        <div class="media-img">
+                            <img src="{{ blog.author_image.url }}" alt="{{ blog.author }}">
+                        </div>
+                        {% endif %}
+                        <div class="media-body">
+                            <p class="author-degi">Müəllif</p>
+                            <h3 class="author-name h4">{{ blog.author }}</h3>
+                            {% if blog.author_bio %}
+                            <p class="author-text">{{ blog.author_bio }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if previous_blog or next_blog %}
+                    <div class="blog-navigation mt-4">
+                        <div class="row">
+                            {% if previous_blog %}
+                            <div class="col-md-6">
+                                <a href="{% url 'blog_detail' previous_blog.slug %}" class="vs-btn style2">
+                                    <i class="far fa-arrow-left"></i> Əvvəlki: {{ previous_blog.title|truncatewords:5 }}
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% if next_blog %}
+                            <div class="col-md-6 text-end">
+                                <a href="{% url 'blog_detail' next_blog.slug %}" class="vs-btn style2">
+                                    Sonrakı: {{ next_blog.title|truncatewords:5 }} <i class="far fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="sidebar-area">
+                    <div class="widget widget_search">
+                        <h3 class="widget_title">Axtarış</h3>
+                        <form class="search-form" method="get" action="{% url 'blog' %}">
+                            <input type="text" name="q" placeholder="Axtarış...">
+                            <button type="submit"><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    {% if recent_blogs %}
+                    <div class="widget">
+                        <h3 class="widget_title">Ən Son Xəbərlər</h3>
+                        <div class="recent-post-wrap">
+                            {% for blog_item in recent_blogs %}
+                            <div class="recent-post">
+                                <div class="media-img">
+                                    <a href="{% url 'blog_detail' blog_item.slug %}">
+                                        {% if blog_item.image %}
+                                        <img src="{{ blog_item.image.url }}" alt="{{ blog_item.title }}">
+                                        {% else %}
+                                        <img src="{% static 'assets/img/blog/recent-post-1-1.jpg' %}" alt="{{ blog_item.title }}">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="recent-post-meta">
+                                        <a href="{% url 'blog' %}"><i class="far fa-calendar-alt"></i>{{ blog_item.date|az_tarix }}</a>
+                                    </div>
+                                    <h4 class="post-title">
+                                        <a class="text-inherit" href="{% url 'blog_detail' blog_item.slug %}">{{ blog_item.title }}</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if categories %}
+                    <div class="widget widget_categories">
+                        <h3 class="widget_title">Kateqoriyalar</h3>
+                        <ul>
+                            {% for category in categories %}
+                            <li>
+                                <a href="{% url 'blog' %}?category={{ category.slug }}">{{ category.name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if sidebar_gallery %}
+                    <div class="widget">
+                        <h4 class="widget_title">Şəkillər Qalereyası</h4>
+                        <div class="sidebar-gallery">
+                            {% for gallery_item in sidebar_gallery %}
+                            <div class="gallery-thumb">
+                                <img src="{{ gallery_item.image.url }}" alt="{{ gallery_item.title }}" class="w-100">
+                                <a href="{{ gallery_item.image.url }}" class="popup-image gal-btn"><i class="fal fa-plus"></i></a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if featured_blogs %}
+                    <div class="widget">
+                        <h3 class="widget_title">Çox Oxunan Bloglar</h3>
+                        <div class="recent-post-wrap">
+                            {% for blog_item in featured_blogs %}
+                            <div class="recent-post">
+                                <div class="media-img">
+                                    <a href="{% url 'blog_detail' blog_item.slug %}">
+                                        {% if blog_item.image %}
+                                        <img src="{{ blog_item.image.url }}" alt="{{ blog_item.title }}">
+                                        {% else %}
+                                        <img src="{% static 'assets/img/blog/recent-post-1-1.jpg' %}" alt="{{ blog_item.title }}">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="recent-post-meta">
+                                        <a href="{% url 'blog' %}"><i class="far fa-calendar-alt"></i>{{ blog_item.date|az_tarix }}</a>
+                                    </div>
+                                    <h4 class="post-title">
+                                        <a class="text-inherit" href="{% url 'blog_detail' blog_item.slug %}">{{ blog_item.title }}</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if upcoming_events %}
+                    <div class="widget widget_tag_cloud">
+                        <h3 class="widget_title">Gələcək Tədbirlər</h3>
+                        <div class="vs-event-widget">
+                            {% for event in upcoming_events %}
+                            <div class="recent-event">
+                                <a href="{% url 'event_detail' event.slug %}" class="event-date">
+                                    <span class="month">{{ event.event_date|date:"M" }}</span>{{ event.event_date|date:"d" }}
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="event-title">
+                                        <a href="{% url 'event_detail' event.slug %}" class="text-inherit">{{ event.title }}</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="widget bg-vs-secondary" data-bg-src="{% if page_settings and page_settings.widget_background_image %}{{ page_settings.widget_background_image.url }}{% else %}{% static 'assets/img/bg/widget-bg-1-1.png' %}{% endif %}">
+                        <h4 class="mt-n2 text-white">{% if page_settings %}{{ page_settings.widget_title }}{% else %}Gəlin bir yerdə möhtəşəm işlər yaradaq{% endif %}</h4>
+                        <p class="mb-4 pb-1 text-white">{% if page_settings %}{{ page_settings.widget_description }}{% else %}Uşaq bağçası ilə bağlı ən son xəbərlər, dəstək və məsləhətlərdən xəbərdar olun.{% endif %}</p>
+                        <a href="{% if page_settings %}{{ page_settings.widget_button_url }}{% else %}{% url 'registration' %}{% endif %}" class="vs-btn">{% if page_settings %}{{ page_settings.widget_button_text }}{% else %}Üzv Ol{% endif %}</a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+{% load blog_filters %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">{{ event.title }}</h1>
+            <p class="breadcumb-text">{{ event.short_description }}</p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana səhifə</a></li>
+                    <li><a href="{% url 'blog' %}">Bloqlarımız</a></li>
+                    <li>{{ event.title }}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="space">
+    <div class="container">
+        <span class="sec-subtitle">{{ event.event_date|az_tarix }}</span>
+        <h2 class="h1 mt-n2 mb-4">{{ event.title }}</h2>
+        
+        <div class="row mb-2 mb-lg-4">
+            <div class="col-md-7 col-lg-6 mb-30 mb-sm-0">
+                <h3 class="h4">Tədbir Geri Sayımı</h3>
+                <div class="title-divider1"></div>
+                <div class="countdown-style1">
+                    <ul class="countdown-active" data-end-date="{{ event.event_date|date:'m/d/Y' }}">
+                        <li><span class="days">0</span>Gün</li>
+                        <li><span class="hours">0</span>Saat</li>
+                        <li><span class="minutes">0</span>Dəqiqə</li>
+                        <li><span class="seconds">0</span>Saniyə</li>
+                    </ul>
+                </div>
+            </div>
+            
+            {% if event.coordinator_name %}
+            <div class="col-md-5 col-lg-6">
+                <h3 class="h4">Koordinator</h3>
+                <div class="title-divider1"></div>
+                <h4 class="text-theme mt-n2">{{ event.coordinator_name }}</h4>
+                <p class="fs-md">
+                    {% if event.coordinator_phone %}
+                    Telefon: <a href="tel:{{ event.coordinator_phone }}" class="text-inherit">{{ event.coordinator_phone }}</a><br>
+                    {% endif %}
+                    {% if event.coordinator_email %}
+                    Email: <a href="mailto:{{ event.coordinator_email }}" class="text-inherit">{{ event.coordinator_email }}</a>
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if event.image %}
+        <div class="img-box7">
+            <div class="mega-hover">
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            </div>
+        </div>
+        {% endif %}
+        
+        <h2>Tədbir Haqqında</h2>
+        <div class="title-divider1"></div>
+        <div class="event-description">
+            {{ event.full_description|linebreaks }}
+        </div>
+        
+        {% if event.guides.exists %}
+        <h2>Tədbir Bələdçisi</h2>
+        <div class="title-divider1"></div>
+        <div class="accordion accordion-style1" id="eventGuide">
+            {% for guide in event.guides.all %}
+            <div class="accordion-item {% if forloop.first %}active{% endif %}">
+                <div class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" 
+                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
+                            aria-controls="collapse{{ forloop.counter }}">
+                        {{ guide.question }}
+                    </button>
+                </div>
+                <div id="collapse{{ forloop.counter }}" 
+                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
+                     aria-labelledby="heading{{ forloop.counter }}" 
+                     data-bs-parent="#eventGuide">
+                    <div class="accordion-body">
+                        <p>{{ guide.answer }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if event.map_url %}
+        <h2 class="mt-5">Tədbir Yeri</h2>
+        <div class="title-divider1"></div>
+        <p class="mb-3"><strong>Ünvan:</strong> {{ event.location }}</p>
+        <div class="map-style1">
+            <iframe src="{{ event.map_url }}" 
+                    width="600" height="450" style="border:0;" 
+                    allowfullscreen="" loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

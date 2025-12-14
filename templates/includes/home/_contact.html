@@ -1,0 +1,103 @@
+{% load static %}
+<section id="birthday-reservation" class="bg-smoke" data-bg-src="{% static 'assets/img/bg/bg-con-1-1.png' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 style="margin-top:50px" class="sec-title mb-3">
+                    {% if reservation_settings %}{{ reservation_settings.section_title }}{% else %}Doğum Günü Rezervasiyası{% endif %}
+                </h2>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="list-style1">
+                            <ul class="list-unstyled mb-0">
+                                <li>{% if reservation_settings %}{{ reservation_settings.feature_1 }}{% else %}Unudulmaz doğum günü təşkil edin{% endif %}</li>
+                                <li>{% if reservation_settings %}{{ reservation_settings.feature_2 }}{% else %}Rahat və əyləncəli mühit{% endif %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="list-style1">
+                            <ul class="list-unstyled">
+                                <li>{% if reservation_settings %}{{ reservation_settings.feature_3 }}{% else %}Foto və video çəkiliş imkanı{% endif %}</li>
+                                <li>{% if reservation_settings %}{{ reservation_settings.feature_4 }}{% else %}Fərdi bəzək və proqram seçimi{% endif %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if messages %}
+                <div class="alert-container mb-3">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="post" class="form-style3 compact-form" action="{% url 'home' %}#birthday-reservation">
+                    {% csrf_token %}
+                    <div class="row justify-content-between">
+                        <div class="col-md-6 form-group">
+                            <label>Uşağın adı <span class="required">(Vacibdir)</span></label>
+                            <input type="text" name="child_name" placeholder="Uşağın adını daxil edin" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Uşağın doğum tarixi <span class="required">(Vacibdir)</span></label>
+                            <input type="date" name="birth_date" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Şənlik tarixi <span class="required">(Vacibdir)</span></label>
+                            <input type="date" name="event_date" min="{{ today }}" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>İştirakçı sayı</label>
+                            <input type="number" name="participants" placeholder="Neçə uşaq iştirak edəcək?" min="1">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Valideynin adı</label>
+                            <input type="text" name="parent_name" placeholder="Valideynin adını daxil edin">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Telefon nömrəsi</label>
+                            <input type="tel" name="phone" placeholder="+994 XX XXX XX XX">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email ünvanınızı daxil edin">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Əlavə qeydlər</label>
+                            <textarea name="notes" rows="2" placeholder="Xüsusi istəkləriniz varsa qeyd edin..."></textarea>
+                        </div>
+                        <div class="col-auto align-self-center form-group">
+                            <input type="checkbox" id="subscribe_to_events" name="subscribe_to_events">
+                            <label for="subscribe_to_events">Tədbirlə bağlı yeniliklərdən xəbərdar olmaq istəyirəm</label>
+                        </div>
+                        <div class="col-auto form-group">
+                            <button class="vs-btn" type="submit">Rezerv et</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.compact-form input,
+.compact-form textarea {
+    padding: 10px 15px;
+    font-size: 14px;
+}
+.compact-form .form-group {
+    margin-bottom: 15px;
+}
+.compact-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+</style>

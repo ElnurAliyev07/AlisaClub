@@ -1,0 +1,163 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% if page_settings and page_settings.breadcrumb_image %}{{ page_settings.breadcrumb_image.url }}{% else %}{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}{% endif %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">
+                {% if page_settings %}{{ page_settings.breadcrumb_title }}{% else %}Haqqımızda{% endif %}
+            </h1>
+            <p class="breadcumb-text">
+                {% if page_settings %}{{ page_settings.breadcrumb_description }}{% else %}Alisa Club uşaqların inkişafı, yaradıcılığı və öyrənməsini dəstəkləyən sevgi dolu bir mühit yaradır.{% endif %}
+            </p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana səhifə</a></li>
+                    <li>{% if page_settings %}{{ page_settings.breadcrumb_title }}{% else %}Haqqımızda{% endif %}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--==============================
+   About Sections
+==============================-->
+{% for section in about_sections %}
+<section class="{% if forloop.first %}space-top{% else %}space-extra-bottom{% endif %} {% if not forloop.last %}space-extra-bottom{% endif %}">
+    <div class="container">
+        <div class="row align-items-center">
+            {% if section.image_position == 'right' %}
+            <div class="col-md-6 order-md-2">
+                <div class="img-box2 text-center">
+                    <div class="transform-banner">
+                        <img src="{{ section.image.url }}" alt="{{ section.title }}" class="img-fluid">
+                    </div>
+                    <div class="vs-circle jump"></div>
+                </div>
+            </div>
+            <div class="col-md-6 order-md-1">
+            {% else %}
+            <div class="col-md-6">
+                <div class="img-box2 style2 text-center">
+                    <div class="transform-banner">
+                        <img src="{{ section.image.url }}" alt="{{ section.title }}" class="img-fluid">
+                    </div>
+                    <div class="vs-circle jump"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            {% endif %}
+                <h2 class="sec-title">{{ section.title }}</h2>
+                <p class="sec-text mb-4">{{ section.description|linebreaks }}</p>
+                
+                {% if section.features.exists %}
+                <div class="row justify-content-center justify-content-lg-start text-start">
+                    <div class="col-auto">
+                        <div class="list-style1">
+                            <ul class="list-unstyled">
+                                {% for feature in section.features.all %}
+                                <li>{{ feature.text }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if section.session_times.exists %}
+                <p class="sec-subtitle2 mb-1">Seanslar: Bazar ertəsi – Cümə</p>
+                <div class="row gx-50 justify-content-center justify-content-lg-start">
+                    {% for session in section.session_times.all %}
+                    <div class="col-auto">
+                        <div class="info-style1">
+                            <p class="info-title">{{ session.title }}:</p>
+                            <p class="info-text">{{ session.time }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+
+<!--==============================
+    History Area
+==============================-->
+{% if timelines %}
+<section class="space-top space-extra-bottom">
+    <div class="container">
+        <div class="title-area text-center">
+            <span class="sec-subtitle">
+                {% if timeline_settings %}{{ timeline_settings.subtitle }}{% else %}Alisa Club tarixçəsi{% endif %}
+            </span>
+            <h2 class="sec-title">
+                {% if timeline_settings %}{{ timeline_settings.title }}{% else %}İllərlə böyüyən sevgi və inkişafa səyahət{% endif %}
+            </h2>
+        </div>
+        <div class="row g-4">
+            {% for timeline in timelines %}
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-style4 h-100">
+                    <div class="feature-body h-100 d-flex flex-column">
+                        <div>
+                            <span class="feature-year">{{ timeline.year }}</span>
+                            <h3 class="feature-title h5">{{ timeline.title }}</h3>
+                            <p class="feature-text">{{ timeline.description }}</p>
+                        </div>
+                        <div class="feature-img mt-auto">
+                            <img src="{{ timeline.image.url }}" alt="{{ timeline.title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!--==============================
+    Gallery Area
+==============================-->
+{% if galleries %}
+<section class="space-top space-extra-bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="title-area text-center">
+                    <div class="sec-bubble">
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                    </div>
+                    <h2 class="sec-title">
+                        {% if gallery_settings %}{{ gallery_settings.title }}{% else %}Alisa Club-un rəngarəng dünyasına baxın!{% endif %}
+                    </h2>
+                    <p class="sec-text">
+                        {% if gallery_settings %}{{ gallery_settings.description }}{% else %}Kiçik ürəklərin böyük gülümsəmələri — hər anı sevgi ilə paylaşırıq{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row gx-35 gy-gx filter-active">
+            {% for gallery in galleries %}
+            <div class="col-sm-6 col-lg-4 col-xl-3 filter-item">
+                <div class="gallery-style1">
+                    <div class="gallery-img">
+                        <img src="{{ gallery.image.url }}" alt="{{ gallery.title }}">
+                        <a href="{{ gallery.image.url }}" class="gallery-btn popup-image"><i class="far fa-plus"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

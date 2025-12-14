@@ -1,0 +1,60 @@
+{% load static %}
+{% load blog_filters %}
+
+<section style="margin-top: 60px;" class="space-extra-bottom">
+    <div class="container">
+        <div class="title-area text-center">
+            <div class="sec-bubble">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+            </div>
+            <h2 class="sec-title">
+                {% if homepage_blog_settings %}
+                {{ homepage_blog_settings.title }}
+                {% else %}
+                Son Xəbərlər
+                {% endif %}
+            </h2>
+            <p class="sec-text">
+                {% if homepage_blog_settings %}
+                {{ homepage_blog_settings.description }}
+                {% else %}
+                "Alisa Club"da təqdim olunan fəaliyyətləri və yenilikləri daim genişləndiririk
+                {% endif %}
+            </p>
+        </div>
+
+        {% if homepage_blogs %}
+        <div class="row vs-carousel" data-slide-show="3" data-md-slide-show="2">
+            {% for blog in homepage_blogs %}
+            <div class="col-xl-4">
+                <div class="vs-blog blog-style1">
+                    {% if blog.image %}
+                    <div class="blog-img">
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-100">
+                    </div>
+                    {% endif %}
+                    <div class="blog-content">
+                        <a href="{% url 'blog' %}" class="blog-date">
+                            <i class="fal fa-calendar-alt"></i>{{ blog.date|az_tarix }}
+                        </a>
+                        <h3 class="blog-title h5">
+                            <a href="{% url 'blog_detail' blog.slug %}">{{ blog.title }}</a>
+                        </h3>
+                        <p class="blog-text">{{ blog.short_content|truncatewords:15 }}</p>
+                    </div>
+                    <a href="{% url 'blog_detail' blog.slug %}" class="blog-btn">Ətraflı<i class="far fa-angle-right"></i></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>Hələ ki blog yazısı yoxdur.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>

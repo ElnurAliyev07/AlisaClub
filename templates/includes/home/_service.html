@@ -1,0 +1,72 @@
+{% load static %}
+
+<section class="service-layout8 space-extra-bottom" ></section>
+    <div class="service-bg" data-bg-src="{% static 'assets/img/bg/ser-ab-7-1.png' %}"></div>
+    <div class="container">
+        <div class="row">
+            {% for service in services %}
+            <div class="col-lg-4 service-style7 color{{ forloop.counter }}">
+                <div class="service-body" {% if service.image %}data-bg-src="{{ service.image.url }}"{% else %}data-bg-src="{% static 'assets/img/service/sr-d-7-' %}{{ forloop.counter }}.jpg"{% endif %}>
+                    <div class="service-icon" data-bg-src="{% static 'assets/img/service/ser-col-bg7.svg' %}">
+                        <img src="{% static service.icon_path %}" alt="{{ service.title }}">
+                    </div>
+                    <h3 class="service-title">
+                        {{ service.title }}
+                    </h3>
+                    <p class="service-text">
+                        {{ service.short_description }}
+                    </p>
+                    <div class="service-footer">
+                        <a href="#" class="service-link">
+                            <i class="fal fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-lg-4 service-style7 color1">
+                <div class="service-body" data-bg-src="{% static 'assets/img/service/sr-d-7-1.jpg' %}">
+                    <div class="service-icon" data-bg-src="{% static 'assets/img/service/ser-col-bg7.svg' %}">
+                        <img src="{% static 'assets/img/icon/ser7-1.svg' %}" alt="service">
+                    </div>
+                    <h3 class="service-title">Uşaq Klubu və Oyunlar</h3>
+                    <p class="service-text">20,000-dən çox uşağa qayğı göstəririk</p>
+                    <div class="service-footer">
+                        <a href="#" class="service-link">
+                            <i class="fal fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 service-style7 color2">
+                <div class="service-body" data-bg-src="{% static 'assets/img/service/sr-d-7-2.jpg' %}">
+                    <div class="service-icon" data-bg-src="{% static 'assets/img/service/ser-col-bg7.svg' %}">
+                        <img src="{% static 'assets/img/icon/ser7-2.svg' %}" alt="service">
+                    </div>
+                    <h3 class="service-title">Təhlükəsiz və Etibarlı Mühit</h3>
+                    <p class="service-text">20,000-dən çox uşağa qayğı göstəririk</p>
+                    <div class="service-footer">
+                        <a href="#" class="service-link">
+                            <i class="fal fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 service-style7 color3">
+                <div class="service-body" data-bg-src="{% static 'assets/img/service/sr-d-7-3.jpg' %}">
+                    <div class="service-icon" data-bg-src="{% static 'assets/img/service/ser-col-bg7.svg' %}">
+                        <img src="{% static 'assets/img/icon/ser7-3.svg' %}" alt="service">
+                    </div>
+                    <h3 class="service-title">Mükafatlı Uşaq Bağçası</h3>
+                    <p class="service-text">20,000-dən çox uşağa qayğı göstəririk</p>
+                    <div class="service-footer">
+                        <a href="#" class="service-link">
+                            <i class="fal fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

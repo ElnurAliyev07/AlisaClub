@@ -1,0 +1,96 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcumb-wrapper " data-bg-src="{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}">
+    <div class="container z-index-common">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">{{ service.title }}</h1>
+            <p class="breadcumb-text">{{ service.short_description }}</p>
+            <div class="breadcumb-menu-wrap">
+                <!-- <ul class="breadcumb-menu">
+                    <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                    <li><a href="{% url 'service' %}">Xidmətlər</a></li>
+                    <li>{{ service.title }}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class=" space-top">
+    <div class="container">
+        <div class="row justify-content-between flex-row-reverse gx-50">
+            <div class="col-lg-6">
+                <div class="img-box7">
+                    <div class="mega-hover">
+                        <img class="w-100" src="{{ service.detail_image.url }}" alt="{{ service.title }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 align-self-center">
+                <div class="service-about">
+                    <h2 class="service-title h1 mt-n2">{{ service.title }}</h2>
+                    <div class="title-divider2"></div>
+                    <p class="service-text">{{ service.description|linebreaks }}</p>
+                    
+                    {% if features %}
+                    <div class="list-style1">
+                        <ul class="list-unstyled">
+                            {% for feature in features %}
+                            <li>{{ feature.feature_text }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    {% if schedules %}
+                    <h3 class="h6 pt-1 text-uppercase">Sessiyalar: Bazar ertəsi – Cümə</h3>
+                    <div class="row gx-50">
+                        {% for schedule in schedules %}
+                        <div class="col-auto">
+                            <div class="info-style1">
+                                <p class="info-title">{{ schedule.session_name }}:</p>
+                                <p class="info-text">{{ schedule.time_range }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if faqs %}
+<section class=" space-extra-bottom">
+    <div class="container">
+        <h2>Tez-tez Verilən Suallar</h2>
+        <div class="title-divider2"></div>
+        <div class="accordion accordion-style1" id="faqVersion3">
+            {% for faq in faqs %}
+            <div class="accordion-item {% if forloop.first %}active{% endif %}">
+                <div class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" 
+                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
+                            aria-controls="collapse{{ forloop.counter }}">
+                        {{ faq.question }}
+                    </button>
+                </div>
+                <div id="collapse{{ forloop.counter }}" 
+                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
+                     aria-labelledby="heading{{ forloop.counter }}" 
+                     data-bs-parent="#faqVersion3">
+                    <div class="accordion-body">
+                        <p>{{ faq.answer|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

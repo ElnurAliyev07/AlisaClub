@@ -1,0 +1,115 @@
+{% load static %}
+<section class="bg-vs-secondary space-extra-bottom">
+    <div class="container">
+        <div class="row text-center text-lg-start">
+            <!-- Başlıq -->
+            <div class="col-lg-5 col-xl-6 mb-n4 mb-lg-0">
+                <div class="title-area">
+                    <span style="margin-top: 50px;" class="sec-subtitle text-white">{% if why_choose_us %}{{ why_choose_us.title|default:'Niyə Biz?' }}{% else %}Niyə Biz?{% endif %}</span>
+                    <h2 class="sec-title text-white">{% if why_choose_us %}{{ why_choose_us.subtitle|default:'Əsas Dəyərlərimiz' }}{% else %}Əsas Dəyərlərimiz{% endif %}</h2>
+                </div>
+            </div>
+
+            <!-- Alt mətn -->
+            <div class="col-lg-7 col-xl-6">
+                <div class="title-area">
+                    <p style="margin-top: 50px;" class="sec-text text-white">
+                        {% if why_choose_us and why_choose_us.description %}
+                            {{ why_choose_us.description|safe }}
+                        {% else %}
+                            "Alisa Club"da uşaqların inkişafı və əyləncəsi üçün daim yeni imkanlar yaradırıq.
+                            Məqsədimiz uşaqları sevdirərək öyrətmək və onların bacarıqlarını maraqlı və əyləncəli şəkildə inkişaf etdirməkdir.
+                            Biz öyrənmə prosesini parlaq və yaddaqalan etmək üçün çalışırıq.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Xüsusiyyətlər -->
+        <div class="row gx-0 mt-4 pt-2">
+
+            {% if why_choose_us_items %}
+                {% for item in why_choose_us_items %}
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-style2">
+                        <div class="feature-img">
+                            <div class="vs-circle"></div>
+                            {% if item.icon %}
+                                <img src="{{ item.icon.url }}" alt="{{ item.title }}">
+                            {% else %}
+                                <img src="{% static 'assets/img/choose/choose-1-'|add:forloop.counter|add:'.png' %}" alt="{{ item.title }}">
+                            {% endif %}
+                        </div>
+                        <h3 class="feature-title h5">
+                            <a href="#" class="text-inherit">{{ item.title }}</a>
+                        </h3>
+                        <p class="feature-text">
+                            {{ item.description }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Default items if no items in database -->
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-style2">
+                        <div class="feature-img">
+                            <div class="vs-circle"></div>
+                            <img src="{% static 'assets/img/choose/choose-1-1.png' %}" alt="Öyrən və Oyna">
+                        </div>
+                        <h3 class="feature-title h5">
+                            <a href="#" class="text-inherit">Öyrən və Oyna</a>
+                        </h3>
+                        <p class="feature-text">
+                            Məqsədimiz uşaqları əyləncəli şəkildə öyrətmək və onların bacarıqlarını inkişaf etdirməkdir.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-style2">
+                        <div class="feature-img">
+                            <div class="vs-circle"></div>
+                            <img src="{% static 'assets/img/choose/choose-1-2.png' %}" alt="Peşəkar Müəllimlər">
+                        </div>
+                        <h3 class="feature-title h5">
+                            <a href="#" class="text-inherit">Peşəkar Müəllimlər</a>
+                        </h3>
+                        <p class="feature-text">
+                            Təcrübəli və qayğıkeş müəllimlər uşaqların inkişafını diqqətlə izləyir və dəstəkləyir.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-style2">
+                        <div class="feature-img">
+                            <div class="vs-circle"></div>
+                            <img src="{% static 'assets/img/choose/choose-1-3.png' %}" alt="Ailə Atmosferi">
+                        </div>
+                        <h3 class="feature-title h5">
+                            <a href="#" class="text-inherit">Ailə Atmosferi</a>
+                        </h3>
+                        <p class="feature-text">
+                            Uşaqlar özlərini rahat və təhlükəsiz hiss etdiyi, ailəyə yaxın bir mühitdə öyrənirlər.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-style2">
+                        <div class="feature-img">
+                            <div class="vs-circle"></div>
+                            <img src="{% static 'assets/img/choose/choose-1-4.png' %}" alt="Mükəmməl Proqramlar">
+                        </div>
+                        <h3 class="feature-title h5">
+                            <a href="#" class="text-inherit">Mükəmməl Proqramlar</a>
+                        </h3>
+                        <p class="feature-text">
+                            Fərqli yaş qruplarına uyğun, öyrədici və əyləncəli proqramlar təqdim edirik.
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>

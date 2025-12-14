@@ -1,0 +1,135 @@
+{% extends 'pagebase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcumb-wrapper " data-bg-src="{% static 'assets/img/breadcumb/breadcumb-bg.jpg' %}">
+        <div class="container z-index-common">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Üzv ol</h1>
+<p class="breadcumb-text">Alisa uşaqlar üçün sevgi dolu və hərtərəfli inkişaf mühiti yaradır</p>
+                
+                <div class="breadcumb-menu-wrap">
+                    <ul class="breadcumb-menu">
+                        <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
+                        <li>Qeydiyyat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</div>
+<section class="bg-color6 space z-index-common">
+    <div class="container">
+      <div class="vs-auth">
+        <ul class="nav nav-tabs vs-auth__tabs" id="authTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Giriş</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab">Qeydiyyat</button>
+          </li>
+        </ul>
+        <div class="tab-content vs-auth__content" id="authTabContent">
+          <!-- Giriş -->
+          <div class="tab-pane fade show active" id="login" role="tabpanel">
+            <form class="vs-auth__form" method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              <h3 class="vs-auth__title">Xoş Gəlmisiniz</h3>
+              <div class="mb-3">
+                <label class="form-label">İstifadəçi adı</label>
+                <input type="text" name="username" class="form-control" placeholder="İstifadəçi adı" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Şifrə</label>
+                <input type="password" name="password" class="form-control" placeholder="Şifrə" required>
+              </div>
+              <button type="submit" class="btn vs-auth__btn">Giriş</button>
+            </form>
+          </div>
+          <!-- Qeydiyyat -->
+          <div class="tab-pane fade" id="signup" role="tabpanel">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            
+            <form class="vs-auth__form" method="post" action="{% url 'registration' %}">
+              {% csrf_token %}
+              <h3 class="vs-auth__title">Hesab Yarat</h3>
+              
+              <div class="mb-3">
+                <label class="form-label">İstifadəçi adı</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                  <div class="invalid-feedback d-block">
+                    {{ form.username.errors.0 }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Ad</label>
+                {{ form.first_name }}
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Soyad</label>
+                {{ form.last_name }}
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">E-poçt</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="invalid-feedback d-block">
+                    {{ form.email.errors.0 }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Şifrə</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                  <div class="invalid-feedback d-block">
+                    {{ form.password1.errors.0 }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Şifrəni təsdiqlə</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                  <div class="invalid-feedback d-block">
+                    {{ form.password2.errors.0 }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label" for="terms">
+                  <a href="#" class="vs-auth__link">Şərtlər & Qaydalar</a> a razıyam
+                </label>
+              </div>
+              
+              <button type="submit" class="btn vs-auth__btn vs-auth__btn--signup">Qeydiyyat</button>
+              <div class="vs-auth__divider"><span>və ya</span></div>
+              <div class="vs-auth__socials">
+                <button type="button" class="vs-auth__social-btn vs-auth__social-btn--google">
+                  <i class="fab fa-google"></i> Google ilə Davam Et
+                </button>
+                <button type="button" class="vs-auth__social-btn vs-auth__social-btn--facebook">
+                  <i class="fab fa-facebook-f"></i> Facebook ilə Davam Et
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}

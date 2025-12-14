@@ -1,0 +1,31 @@
+{% load static %}
+<div class="widget">
+    <h3 class="widget_title">Son Yeniliklər</h3>
+    <div class="recent-post-wrap">
+        {% if sidebar_blogs %}
+            {% for blog in sidebar_blogs %}
+            <div class="recent-post">
+                <div class="media-img">
+                    <a href="{% url 'blog_detail' blog.slug %}">
+                        {% if blog.image %}
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                        {% else %}
+                        <img src="{% static 'assets/img/blog/recent-post-1-1.jpg' %}" alt="{{ blog.title }}">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="media-body">
+                    <div class="recent-post-meta">
+                        <a href="{% url 'blog' %}"><i class="far fa-calendar-alt"></i>{{ blog.date|date:"d F, Y" }}</a>
+                    </div>
+                    <h4 class="post-title">
+                        <a class="text-inherit" href="{% url 'blog_detail' blog.slug %}">
+                            {{ blog.title }}
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

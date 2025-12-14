@@ -1,0 +1,316 @@
+{% load static %}
+
+<section class="hero-section">
+    <div class="hero-swiper swiper">
+        <div class="swiper-wrapper">
+            
+            <!-- Tədbirlər -->
+            {% for event in hero_events %}
+            <div class="swiper-slide">
+                <div class="hero-slide" style="background: url('{{ event.image.url }}') center/cover;">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="hero-content">
+                                    <span class="hero-badge">📅 Tədbir</span>
+                                    <h1 class="hero-title">{{ event.title }}</h1>
+                                    <p class="hero-description">{{ event.short_description }}</p>
+                                    <div class="hero-meta">
+                                        <div class="meta-item">
+                                            <i class="far fa-calendar-alt"></i>
+                                            {% if event.event_end_date %}
+                                                {{ event.event_date|date:"d.m.Y" }} - {{ event.event_end_date|date:"d.m.Y" }}
+                                            {% else %}
+                                                {{ event.event_date|date:"d.m.Y, H:i" }}
+                                            {% endif %}
+                                        </div>
+                                        {% if event.location %}
+                                        <div class="meta-item">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ event.location }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="hero-buttons">
+                                        <a href="{% url 'event_detail' event.slug %}" class="vs-btn">Ətraflı Məlumat</a>
+                                        <a href="{% url 'contact' %}" class="vs-btn style2">Rezerv Et</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Kampaniyalar -->
+            {% for campaign in hero_campaigns %}
+            <div class="swiper-slide">
+                <div class="hero-slide" style="background: {% if campaign.image %}url('{{ campaign.image.url }}') center/cover{% else %}#f5576c{% endif %};">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="hero-content">
+                                    <span class="hero-badge">🎁 Kampaniya</span>
+                                    <h1 class="hero-title">{{ campaign.title }}</h1>
+                                    <p class="hero-description">{{ campaign.description|truncatewords:30 }}</p>
+                                    <div class="campaign-highlight">
+                                        <div class="discount-big">{{ campaign.discount_percent }}%</div>
+                                        <div class="discount-info">
+                                            <div>ENDİRİM</div>
+                                            {% if campaign.code %}
+                                            <div class="campaign-code">Kod: <strong>{{ campaign.code }}</strong></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="hero-buttons">
+                                        <a href="{% url 'contact' %}" class="vs-btn">İndi Rezerv Et</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Default Banner (əgər tədbir və kampaniya yoxdursa) -->
+            {% if not hero_events and not hero_campaigns %}
+            <div class="swiper-slide">
+                <div class="hero-slide" style="background: url('{% static 'assets/img/hero/hero-8-1.png' %}') center/cover;">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="hero-content">
+                                    <span class="hero-badge">🎨 Alisa Club</span>
+                                    <h1 class="hero-title">Uşaqlarınız üçün Əyləncə və İnkişaf</h1>
+                                    <p class="hero-description">Yaradıcılıq, öyrənmə və əyləncəni bir araya gətirən məkan. Uşaqlarınızın hər günü xüsusi olsun!</p>
+                                    <div class="hero-buttons">
+                                        <a href="{% url 'about' %}" class="vs-btn">Haqqımızda</a>
+                                        <a href="{% url 'contact' %}" class="vs-btn style2">Rezerv Et</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+        </div>
+        
+        <!-- Navigation -->
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<style>
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slide {
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    padding: 100px 0;
+    position: relative;
+}
+
+.hero-content {
+    color: #1a1a1a;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 600px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
+
+.hero-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.meta-item i {
+    font-size: 0.9rem;
+}
+
+.campaign-highlight {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.discount-big {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.discount-info {
+    flex: 1;
+}
+
+.discount-info > div:first-child {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.campaign-code {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.campaign-code strong {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hero-buttons .vs-btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+}
+
+.swiper-pagination-bullet {
+    background: white;
+    opacity: 0.5;
+    width: 12px;
+    height: 12px;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    width: 30px;
+    border-radius: 6px;
+}
+
+@media (max-width: 991px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-description {
+        font-size: 0.9rem;
+    }
+    
+    .hero-content {
+        padding: 25px;
+    }
+    
+    .hero-slide {
+        min-height: 500px;
+        padding: 80px 0;
+    }
+    
+    .discount-big {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-description {
+        font-size: 0.85rem;
+    }
+    
+    .hero-content {
+        padding: 20px;
+    }
+    
+    .hero-slide {
+        min-height: 450px;
+        padding: 60px 0;
+    }
+    
+    .campaign-highlight {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px 15px;
+    }
+    
+    .discount-big {
+        font-size: 1.8rem;
+    }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+    });
+});
+</script>
