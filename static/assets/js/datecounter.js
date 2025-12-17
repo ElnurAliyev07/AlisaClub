@@ -15,10 +15,20 @@ function getTimeRemaining(endtime) {
 
 function initializeClock(id, endtime) {
   var clock = document.getElementById(id);
+  if (!clock) {
+    console.warn('Clock element with ID "' + id + '" not found');
+    return;
+  }
+  
   var daysSpan = clock.querySelector('.days');
   var hoursSpan = clock.querySelector('.hours');
   var minutesSpan = clock.querySelector('.minutes');
   var secondsSpan = clock.querySelector('.seconds');
+  
+  if (!daysSpan || !hoursSpan || !minutesSpan || !secondsSpan) {
+    console.warn('Clock element structure is incomplete for ID "' + id + '"');
+    return;
+  }
 
   function updateClock() {
     var t = getTimeRemaining(endtime);
@@ -37,5 +47,10 @@ function initializeClock(id, endtime) {
   var timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-initializeClock('clockdiv', deadline);
+// Only initialize if the clockdiv element exists
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('clockdiv')) {
+    var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+    initializeClock('clockdiv', deadline);
+  }
+});

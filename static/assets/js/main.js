@@ -32,7 +32,16 @@
   /*---------- 01. On Load Function ----------*/
   $(window).on("load", function () {
     $(".preloader").fadeOut();
-  });
+    
+    // Initialize AOS (Animate On Scroll) if available
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+});
+    }
+  });      
 
   /*---------- 02. Preloader ----------*/
   if ($(".preloader").length > 0) {
